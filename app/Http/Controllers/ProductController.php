@@ -17,6 +17,7 @@ class ProductController extends Controller
 {
     public function index()
     {
+
         $products = Product::where('type' , '=' ,  '1')->paginate(10);
         return view('panel/product/index', compact('products'));
     }
@@ -116,7 +117,7 @@ class ProductController extends Controller
             $product_history = ProductHistory::create([
                 'product_id' => $product->id,
                 'title' => $product->title,
-                'slut' => $slut,
+                'slut' => $product->slut,
                 'price' => $product->price,
                 'type' => $product->type,
                 'abstract' => $product->abstract,
@@ -388,10 +389,10 @@ class ProductController extends Controller
 
     public function videoStoreEdit(Request $request, $id)
     {
-        if (auth()->user()->can('update', Product::class)) {
+        if (auth()->user()->can('create', Product::class)) {
             $request->validate([
                 'video' => ['video'],
-                'videoCategory' => ['string','max:255'],
+                'videoCategory' => ['max:255'],
             ]);
             $video = Gallery::where('id', '=', $id)->first();
             $category = ($request->videoCategory)? $request->category : null;
@@ -422,7 +423,6 @@ class ProductController extends Controller
 
     public function StoreEdit(Request $request)
     {
-
         $count = count($request->all());
         $product = Product::findOrFail($request->productId);
         $request->validate([
@@ -487,9 +487,6 @@ class ProductController extends Controller
             $product->update([
                 'slut' => $slut,
             ]);
-            if ($product->inventory == 0 and $request->inventory > 0){
-                $product->sendReminderSms();
-            }
 
             if ($request->inventory_display) {
                 DB::update('update products set  inventory_display=:inventory_display where id=:id', [

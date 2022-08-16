@@ -10,7 +10,6 @@ use function PHPUnit\Framework\isEmpty;
 class Product extends Model
 {
     use HasFactory;
-
     protected $table = 'products';
 
     protected $guarded = [];
@@ -22,12 +21,11 @@ class Product extends Model
 
     public function images()
     {
-        return $this->galleries->where('video', '=', null);
+        return $this->galleries->where('video','=',null);
     }
-
     public function videos()
     {
-        return $this->galleries->where('image', '=', null);
+        return $this->galleries->where('image','=',null);
     }
 
     public function properties()
@@ -141,13 +139,13 @@ class Product extends Model
 
     public function reminders()
     {
-        return $this->hasMany(Reminder::class, 'product_id', 'id');
+        return $this->hasMany(Reminder::class,'product_id','id');
     }
 
-    public function remindeUsers_sms()
+    public function remindeUsers()
     {
         $reminders = $this->reminders;
-        foreach ($reminders as $reminder) {
+        foreach ($reminders as $reminder){
             $this->sendReminderSms($reminder->mobile);
             $reminder->delete();
         }
@@ -158,7 +156,7 @@ class Product extends Model
         $reminders = $this->reminders;
         foreach ($reminders as $reminder) {
             $url = 'https://console.melipayamak.com/api/send/shared/e33447ed51e04b5eaafb42632511d492';
-            $data = array('bodyId' => 90329, 'to' => $reminder->mobile, 'args' => [$this->title]);
+            $data = array('bodyId' => 96361, 'to' => $reminder->mobile, 'args' => [$this->title]);
             $data_string = json_encode($data);
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -175,5 +173,27 @@ class Product extends Model
             $reminder->delete();
         }
     }
+
+    public function sendReminderSms1()
+    {
+
+        $url = 'https://console.melipayamak.com/api/send/shared/e33447ed51e04b5eaafb42632511d492';
+        $data = array('bodyId' => 96361, 'to' => '09132595622' , 'args' => ['محصول1']);
+        $data_string = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array('Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
+        );
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+    }
+
+
 
 }
