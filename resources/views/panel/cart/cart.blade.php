@@ -1,6 +1,6 @@
 <x-main-layout>
     <x-slot name="title">
-        - لیست علاقه مندی ها
+        - سبد خرید
     </x-slot>
 
     <!-- breadcrumb start -->

@@ -52,7 +52,8 @@
 
 
                             <div class="product-table">
-                                <form class="theme-form" id="edit-offcode" action="{{ route('offcodes.edit.store' ,$offcode->id) }}"
+                                <form class="theme-form" id="edit-offcode"
+                                      action="{{ route('offcodes.edit.store' ,$offcode->id) }}"
                                       method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('put')
@@ -114,7 +115,8 @@
                                         <div class="row col-md-12 form-group">
                                             <div class="row col-md-12 col-xs-12 col-sm-12">
                                                 <label class="bold"> تعداد یا زمان تخفیف: </label>
-                                                <div class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
+                                                <div
+                                                    class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
                                                     <label>تعداد:</label>
                                                     <input type="number" name="quantity" class="form-control width_70"
                                                            value="{{$offcode->quantity}}">
@@ -124,7 +126,8 @@
                                                     </p>
                                                     @enderror
                                                 </div>
-                                                <div class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
+                                                <div
+                                                    class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
                                                     <label>زمان:</label>
 
                                                     <input type="number" name="time" class="form-control width_70"
@@ -146,7 +149,6 @@
                                     </div>
 
 
-
                                     <hr>
                                     <br>
 
@@ -165,6 +167,29 @@
                                             </div>
                                         </div>
 
+
+                                        <hr>
+                                        <br>
+
+                                        <div class="row col-12 form-group">
+                                            <label class="bold">چه محصولاتی شامل این تخفیف میشوند؟</label>
+                                            <div hidden>{{$i=1}}</div>
+                                            @foreach(\App\Models\Product::all() as $product)
+                                                <div class="inline_flex col-4 border-1 offcode-products">
+                                                    <div class="p-10">
+                                                        {{$product->title}}
+                                                    </div>
+                                                    @if(empty($offcode->products()->where('id',$product->id)->first()))
+                                                        <input type="checkbox" name="product-{{$i}}"
+                                                               value="{{$product->id}}">
+                                                    @else
+                                                        <input type="checkbox" name="product-{{$i}}"
+                                                               value="{{$product->id}}" checked="checked">
+                                                    @endif
+                                                </div>
+                                                <div hidden>{{$i++}}</div>
+                                            @endforeach
+                                        </div>
 
                                         <hr>
                                         <br>

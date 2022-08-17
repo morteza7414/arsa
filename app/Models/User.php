@@ -279,46 +279,6 @@ class User extends Authenticatable
                 'sum' => $this->total_sum(),
             ]);
         }
-
-//        $order_offcodes = DB::table('orders_offcodes')->where('user_id', '=', $this->id)
-//            ->where('order_id', '=', $order->id)->pluck('offcode_id');
-//        $now = Carbon::now();
-//        if (!empty($order_offcodes)) {
-//            foreach ($order_offcodes as $offcode_id) {
-//                $offcode = Offcode::findOrFail($offcode_id);
-//                if (!empty($offcode)) {
-//                    if ($offcode->quantity and $offcode->quantity > 0) {
-//                        if ($offcode->percentage) {
-//                            $off_amount = ($order->sum * $offcode->percentage) / 100;
-//
-//                            $order->update([
-//                                'sum' => $order->sum - $off_amount,
-//                            ]);
-//                        } elseif (empty($offcode->percentage) and $offcode->amount) {
-//                            $order->update([
-//                                'sum' => $order->sum - $offcode->amount,
-//                            ]);
-//                        }
-//                        $offcode->update([
-//                            'quantity' => $offcode->quantity - 1,
-//                        ]);
-//
-//
-//                    } elseif (empty($offcode->quantity) and $offcode->time and $offcode->created_at > $now->subHour($offcode->time)) {
-//                        if ($offcode->percentage) {
-//                            $off_amount = ($order->sum * $offcode->percentage) / 100;
-//                            $order->update([
-//                                'sum' => ($order->sum - $off_amount),
-//                            ]);
-//                        } elseif (empty($offcode->percentage) and $offcode->amount) {
-//                            $order->update([
-//                                'sum' => ($order->sum - $offcode->amount),
-//                            ]);
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
 

@@ -78,6 +78,7 @@ class OffcodeController extends Controller
     public function edit(Offcode $offcode)
     {
         if (auth()->user()->can('update', $offcode)) {
+//            dd($offcode->products);
             return view('panel.offcodes.edit', compact('offcode'));
         }
     }
@@ -119,6 +120,14 @@ class OffcodeController extends Controller
                 'off_reason' => $request->off_reason,
             ]);
 
+            DB::table('offcode_products')->where('offcode_id', $offcode->id)->delete();
+            for ($i = 1; $i < count(Product::all()); $i++) {
+                $product = "product" . "-" . $i;
+                if ($request->$product) {
+                    DB::insert('insert into offcode_products (product_id, offcode_id) values (?, ?)', [$request->$product, $offcode->id]);
+                }
+            }
+
             $request->session()->flash('status', 'کد تخفیف با موفقیت ویرایش شد.');
             return redirect(route('offcodes.index'));
         }
@@ -136,43 +145,43 @@ class OffcodeController extends Controller
         if (!empty($offcode) and !empty($order)) {
             $offcodeProducts = $offcode->products;
             foreach ($carts as $cart) {
-                    foreach ($offcodeProducts as $offcodeProduct) {
-                        if ($offcodeProduct->id == $cart->product_id) {
-                            if (isset($offcode->quantity) and $offcode->quantity > 0) {
-                                $price = $offcodeProduct->offPrice();
-                                if ($offcode->percentage) {
-                                    $off_amount = ($price * $offcode->percentage) / 100;
-                                } elseif (empty($offcode->percentage) and $offcode->amount) {
-                                    $off_amount = $offcode->amount;
-                                }
-                                $cart->update([
-                                    'product_offprice' => $price - $off_amount,
-                                    'off_reason' => $offcode->off_reason,
-                                    'sum' => ($price - $off_amount) * $cart->quantity,
-                                ]);
-                                $offcode->update([
-                                    'quantity' => $offcode->quantity - 1,
-                                ]);
-                            } elseif (empty($offcode->quantity) and isset($offcode->time) and $offcode->created_at > $now->subHour($offcode->time)) {
-                                $price = $offcodeProduct->offPrice();
-                                if ($offcode->percentage) {
-                                    $off_amount = ($price * $offcode->percentage) / 100;
-                                } elseif (empty($offcode->percentage) and $offcode->amount) {
-                                    $off_amount = $offcode->amount;
-                                }
-                                $cart->update([
-                                    'product_offprice' => $price - $off_amount,
-                                    'off_reason' => $offcode->off_reason,
-                                    'sum' => ($price - $off_amount) * $cart->quantity,
-                                ]);
-                            } else {
-                                $request->session()->flash('error', 'متاسفانه این کد منقضی شده است.');
-                                return back();
+                foreach ($offcodeProducts as $offcodeProduct) {
+                    if ($offcodeProduct->id == $cart->product_id) {
+                        if (isset($offcode->quantity) and $offcode->quantity > 0) {
+                            $price = $offcodeProduct->offPrice();
+                            if ($offcode->percentage) {
+                                $off_amount = ($price * $offcode->percentage) / 100;
+                            } elseif (empty($offcode->percentage) and $offcode->amount) {
+                                $off_amount = $offcode->amount;
                             }
-
-                            DB::insert('insert into carts_offcodes (offcode_id, cart_id, user_id, off_amount) values (?, ?, ?, ?)', [$offcode->id, $cart->id, $user->id, $off_amount]);
+                            $cart->update([
+                                'product_offprice' => $price - $off_amount,
+                                'off_reason' => $offcode->off_reason,
+                                'sum' => ($price - $off_amount) * $cart->quantity,
+                            ]);
+                            $offcode->update([
+                                'quantity' => $offcode->quantity - 1,
+                            ]);
+                        } elseif (empty($offcode->quantity) and isset($offcode->time) and $offcode->created_at > $now->subHour($offcode->time)) {
+                            $price = $offcodeProduct->offPrice();
+                            if ($offcode->percentage) {
+                                $off_amount = ($price * $offcode->percentage) / 100;
+                            } elseif (empty($offcode->percentage) and $offcode->amount) {
+                                $off_amount = $offcode->amount;
+                            }
+                            $cart->update([
+                                'product_offprice' => $price - $off_amount,
+                                'off_reason' => $offcode->off_reason,
+                                'sum' => ($price - $off_amount) * $cart->quantity,
+                            ]);
+                        } else {
+                            $request->session()->flash('error', 'متاسفانه این کد منقضی شده است.');
+                            return back();
                         }
+
+                        DB::insert('insert into carts_offcodes (offcode_id, cart_id, user_id, off_amount) values (?, ?, ?, ?)', [$offcode->id, $cart->id, $user->id, $off_amount]);
                     }
+                }
             }
 
 

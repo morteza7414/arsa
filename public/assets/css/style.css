@@ -1809,6 +1809,10 @@ table.invoice-table tbody {
     font-size: medium;
 }
 
+.about-page {
+    background: #F5F5F5;
+}
+
 
 /** index header slider **/
 .header-slider-content {
@@ -1856,6 +1860,10 @@ table.invoice-table tbody {
 }
 
 /** end index header slider **/
+
+.product .product-box .product-imgbox .product-front video {
+    max-height: 140px;
+}
 .p-10{
     padding: 10px;
 }
@@ -1865,6 +1873,7 @@ table.invoice-table tbody {
 .offcode-products {
     justify-content: space-between;
 }
+
 
 
 
@@ -2111,8 +2120,8 @@ table.invoice-table tbody {
     .logo-sm-center {
         position: absolute;
         width: 15%;
-        top: 17%;
-        left: 51%;
+        top: 20%;
+        left: 54%;
     }
     .header-social {
         display: none;
@@ -2252,7 +2261,7 @@ table.invoice-table tbody {
         height: 125px !important;
     }
 
-    body.goog-te-banner {
+    .goog-te-banner {
         overflow: auto !important;
     }
     a.goog-te-menu2-item .text {
@@ -2317,7 +2326,7 @@ table.invoice-table tbody {
         font-size: 10px;
     }
 
-    body.goog-te-banner {
+    .goog-te-banner {
         overflow: auto !important;
     }
     a.goog-te-menu2-item .text {
