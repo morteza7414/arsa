@@ -54,4 +54,14 @@ class Offcode extends Model
     {
         return $this->belongsToMany(Order::class,'orders_offcodes','order_id','offcode_id');
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class,'offcode_products','offcode_id','product_id');
+    }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class,'carts_offcodes','cart_id','offcode_id');
+    }
 }

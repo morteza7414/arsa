@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartsTable extends Migration
+class CreateCartsOffcodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,29 @@ class CreateCartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('carts_offcodes', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('cart_id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('product_id');
-            $table->string('product_title');
-            $table->bigInteger('product_price');
-            $table->bigInteger('product_offprice')->nullable();
-            $table->string('off_reason')->nullable();
-            $table->smallInteger('quantity')->default(1);
-            $table->bigInteger('sum');
-            $table->tinyInteger('status')->default('1');
+            $table->unsignedInteger('offcode_id');
+            $table->bigInteger('off_amount');
             $table->timestamps();
 
-            $table->foreign('product_id')
+
+
+            $table->foreign('offcode_id')
                 ->references('id')
-                ->on('products')
+                ->on('offcodes')
                 ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('CASCADE')
+                ->onUpdate('CASCADE');
+            $table->foreign('cart_id')
+                ->references('id')
+                ->on('carts')
                 ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
         });
@@ -46,6 +48,6 @@ class CreateCartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('carts_offcodes');
     }
 }

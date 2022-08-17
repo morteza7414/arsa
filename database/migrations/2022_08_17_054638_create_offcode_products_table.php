@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartsTable extends Migration
+class CreateOffcodeProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,19 @@ class CreateCartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id');
+        Schema::create('offcode_products', function (Blueprint $table) {
+            $table->unsignedInteger('offcode_id');
             $table->unsignedInteger('product_id');
-            $table->string('product_title');
-            $table->bigInteger('product_price');
-            $table->bigInteger('product_offprice')->nullable();
-            $table->string('off_reason')->nullable();
-            $table->smallInteger('quantity')->default(1);
-            $table->bigInteger('sum');
-            $table->tinyInteger('status')->default('1');
-            $table->timestamps();
 
+            $table->primary(['product_id', 'offcode_id']);
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
                 ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
-            $table->foreign('user_id')
+            $table->foreign('offcode_id')
                 ->references('id')
-                ->on('users')
+                ->on('offcodes')
                 ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
         });
@@ -46,6 +38,6 @@ class CreateCartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('offcode_products');
     }
 }

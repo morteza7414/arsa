@@ -117,7 +117,7 @@
                           <span>
                             <i class="fa fa-globe"></i>
                           </span>
-                                                www.arsa.com
+                                                <a href="{{route('home')}}">www.rsabms.com</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -161,8 +161,8 @@
                                 <li>
                                     <div>
                                         <h6>مبلغ نهایی :
-                                            <h4>
-                                                <h5>{{$transaction->paid}} تومان</h5>
+                                            </h6>
+                                                <h5>{{number_format($transaction->paid)}} تومان</h5>
                                     </div>
                                 </li>
                             </ul>
@@ -192,10 +192,10 @@
                                             {{--                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</p>--}}
                                         </td>
                                         <td>{{$cart->quantity}}</td>
-                                        <td>{{$cart->product_price}} تومان</td>
-                                        <td>{{$cart->product_offprice}} تومان</td>
+                                        <td>{{number_format($cart->product_price)}} تومان</td>
+                                        <td>{{number_format($cart->product_offprice)}} تومان</td>
                                         <td>{{($cart->off_reason)?$cart->off_reason:''}} </td>
-                                        <td>{{$cart->sum}} تومان</td>
+                                        <td>{{number_format($cart->sum)}} تومان</td>
                                     </tr>
                                     <div hidden>{{$count++}}</div>
                                 @endforeach
@@ -213,7 +213,7 @@
                                                     {{\App\Models\Offcode::where('id',$off->offcode_id)->first()->off_reason}}
                                                 @endif
                                             </td>
-                                            <td>{{$off->off_amount}} تومان</td>
+                                            <td>{{number_format($off->off_amount)}} تومان</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -222,19 +222,13 @@
                                 <tr>
                                     <td colspan="4"></td>
                                     <td colspan="2">مبلغ نهایی</td>
-                                    <td>{{$transaction->paid}} تومان</td>
+                                    <td>{{number_format($transaction->paid)}} تومان</td>
                                 </tr>
                                 </tfoot>
                             </table>
                             <hr>
                             <div class="row print-bar">
                                 <div class="col-md-6">
-                                    {{--                                    <div class="printbar-left">--}}
-                                    {{--                                        <button id="exportpdf" class="btn btn-solid btn-md">--}}
-                                    {{--                                            <i class="fa fa-file"></i>--}}
-                                    {{--                                            خروجی PDF--}}
-                                    {{--                                        </button>--}}
-                                    {{--                                    </div>--}}
                                 </div>
                                 <div class="col-md-6">
                                     <div class="printbar-right">

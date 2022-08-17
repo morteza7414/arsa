@@ -35,5 +35,10 @@ class Cart extends Model
         return Product::findOrFail($id);
     }
 
+    public function offcodes()
+    {
+        return $this->belongsToMany(Offcode::class,'carts_offcodes','cart_id','offcode_id');
+    }
+
 
 }

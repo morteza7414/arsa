@@ -1856,9 +1856,15 @@ table.invoice-table tbody {
 }
 
 /** end index header slider **/
-
-
-
+.p-10{
+    padding: 10px;
+}
+.border-1{
+    border: 1px solid;
+}
+.offcode-products {
+    justify-content: space-between;
+}
 
 
 

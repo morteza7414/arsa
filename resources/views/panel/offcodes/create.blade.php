@@ -113,7 +113,8 @@
                                         <div class="row col-md-12 form-group">
                                             <div class="row col-md-12 col-xs-12 col-sm-12">
                                                 <label class="bold"> تعداد یا زمان تخفیف: </label>
-                                                <div class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
+                                                <div
+                                                    class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
                                                     <label>تعداد:</label>
                                                     <input type="number" name="quantity" class="form-control width_70"
                                                            placeholder=" چه تعداد از این کد فعال باشد؟ ">
@@ -123,7 +124,8 @@
                                                     </p>
                                                     @enderror
                                                 </div>
-                                                <div class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
+                                                <div
+                                                    class="product-inline-flex col-md-6 col-xs-12 col-sm-12 float-right">
                                                     <label>زمان:</label>
 
                                                     <input type="number" name="time" class="form-control width_70"
@@ -143,7 +145,6 @@
                                             </h7>
                                         </div>
                                     </div>
-
 
 
                                     <hr>
@@ -167,6 +168,21 @@
 
                                         <hr>
                                         <br>
+
+                                        <div class="row col-12 form-group">
+                                            <label class="bold">چه محصولاتی شامل این تخفیف میشوند؟</label>
+                                            <div hidden>{{$i=1}}</div>
+                                            @foreach(\App\Models\Product::all() as $product)
+                                                <div class="inline_flex col-4 border-1 offcode-products">
+                                                    <div class="p-10">
+                                                        {{$product->title}}
+                                                    </div>
+                                                    <input type="checkbox" name="product-{{$i}}"
+                                                           value="{{$product->id}}" placeholder="{{$product->title}}">
+                                                </div>
+                                                <div hidden>{{$i++}}</div>
+                                            @endforeach
+                                        </div>
 
 
                                         <div class="col-md-12 form-group">

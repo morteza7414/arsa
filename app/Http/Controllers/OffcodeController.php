@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Offcode;
 use App\Models\Order;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,7 @@ class OffcodeController extends Controller
 
     public function store(Request $request)
     {
+//        dd($request->all());
         if (auth()->user()->can('create', Offcode::class)) {
             $request->validate([
                 'code' => ['required', 'string', 'max:255', 'unique:offcodes'],
@@ -60,6 +62,13 @@ class OffcodeController extends Controller
                 'time' => ($request->time) ? $request->time : null,
                 'off_reason' => $request->off_reason,
             ]);
+
+            for ($i = 1; $i < count(Product::all()); $i++) {
+                $product = "product" . "-" . $i;
+                if ($request->$product) {
+                    DB::insert('insert into offcode_products (product_id, offcode_id) values (?, ?)', [$request->$product, $offcode->id]);
+                }
+            }
 
             $request->session()->flash('status', 'کد تخفیف با موفقیت ایجاد شد.');
             return back();
@@ -120,54 +129,59 @@ class OffcodeController extends Controller
         $user = auth()->user();
         $order = $user->order;
         $now = Carbon::now();
-
+        $carts = $user->carts;
         $offcode = Offcode::where('code', $request->offcode)->first();
+
+
         if (!empty($offcode) and !empty($order)) {
-            $order_offcode = DB::table('orders_offcodes')->where('offcode_id', '=', $offcode->id)
-                ->where('user_id', '=', $user->id)->where('order_id', '=', $order->id)->first();
-            if (empty($order_offcode)) {
-                if (isset($offcode->quantity) and $offcode->quantity > 0) {
-                    if ($offcode->percentage) {
-                        $off_amount = ($order->sum * $offcode->percentage) / 100;
+            $offcodeProducts = $offcode->products;
+            foreach ($carts as $cart) {
+                    foreach ($offcodeProducts as $offcodeProduct) {
+                        if ($offcodeProduct->id == $cart->product_id) {
+                            if (isset($offcode->quantity) and $offcode->quantity > 0) {
+                                $price = $offcodeProduct->offPrice();
+                                if ($offcode->percentage) {
+                                    $off_amount = ($price * $offcode->percentage) / 100;
+                                } elseif (empty($offcode->percentage) and $offcode->amount) {
+                                    $off_amount = $offcode->amount;
+                                }
+                                $cart->update([
+                                    'product_offprice' => $price - $off_amount,
+                                    'off_reason' => $offcode->off_reason,
+                                    'sum' => ($price - $off_amount) * $cart->quantity,
+                                ]);
+                                $offcode->update([
+                                    'quantity' => $offcode->quantity - 1,
+                                ]);
+                            } elseif (empty($offcode->quantity) and isset($offcode->time) and $offcode->created_at > $now->subHour($offcode->time)) {
+                                $price = $offcodeProduct->offPrice();
+                                if ($offcode->percentage) {
+                                    $off_amount = ($price * $offcode->percentage) / 100;
+                                } elseif (empty($offcode->percentage) and $offcode->amount) {
+                                    $off_amount = $offcode->amount;
+                                }
+                                $cart->update([
+                                    'product_offprice' => $price - $off_amount,
+                                    'off_reason' => $offcode->off_reason,
+                                    'sum' => ($price - $off_amount) * $cart->quantity,
+                                ]);
+                            } else {
+                                $request->session()->flash('error', 'متاسفانه این کد منقضی شده است.');
+                                return back();
+                            }
 
-                        $order->update([
-                            'sum' => $order->sum - $off_amount,
-                        ]);
-                    } elseif (empty($offcode->percentage) and $offcode->amount) {
-                        $off_amount = $offcode->amount;
-                        $order->update([
-                            'sum' => $order->sum - $off_amount,
-                        ]);
+                            DB::insert('insert into carts_offcodes (offcode_id, cart_id, user_id, off_amount) values (?, ?, ?, ?)', [$offcode->id, $cart->id, $user->id, $off_amount]);
+                        }
                     }
-                    $offcode->update([
-                        'quantity' => $offcode->quantity - 1,
-                    ]);
-
-
-                } elseif (empty($offcode->quantity) and isset($offcode->time) and $offcode->created_at > $now->subHour($offcode->time)) {
-                    if ($offcode->percentage) {
-                        $off_amount = ($order->sum * $offcode->percentage) / 100;
-                        $order->update([
-                            'sum' => ($order->sum - $off_amount),
-                        ]);
-                    } elseif (empty($offcode->percentage) and $offcode->amount) {
-                        $off_amount = $offcode->amount;
-                        $order->update([
-                            'sum' => ($order->sum - $off_amount),
-                        ]);
-                    }
-                } else {
-                    $request->session()->flash('error', 'متاسفانه این کد منقضی شده است.');
-                    return back();
-                }
-
-                $order_offcode = DB::insert('insert into orders_offcodes (offcode_id, order_id, user_id, off_amount) values (?, ?, ?, ?)', [$offcode->id, $order->id, $user->id, $off_amount]);
-            } else {
-                $request->session()->flash('error', 'این کد قبلا توسط شما استفاده شده است.');
-                return back();
             }
 
+
+            $order->update([
+                'total_amount' => $user->total_amount_without_off(),
+                'sum' => $user->total_sum(),
+            ]);
             $request->session()->flash('status', 'کد تخفیف با موفقیت اعمال شد.');
+
             return back();
         } else {
             $request->session()->flash('error', 'چنین کد تخفیفی وجود ندارد!');

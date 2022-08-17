@@ -59,7 +59,7 @@ class CartController extends Controller
                         'quantity' => $quantityPlus,
                         'user_id' => $userId,
                         'product_id' => $productId,
-                        'sum' => $price * $quantityPlus,
+                        'sum' => $check->product_offprice * $quantityPlus,
                     ]);
                     $request->session()->flash('status', 'محصول به سبد خرید شما افزوده شد.');
                 }
@@ -84,7 +84,7 @@ class CartController extends Controller
         $cart = Cart::findOrFail($id);
         $q = $cart->quantity;
         $product = $cart->product;
-        $price = $product->offPrice();
+        $price = $cart->product_offprice;
         $quantity = $q + 1;
         if ($quantity <= $product->inventory) {
             $cart->update([
@@ -107,27 +107,13 @@ class CartController extends Controller
         $cart = Cart::findOrFail($id);
         $q = $cart->quantity;
         $product = $cart->product;
-        $price = $product->offPrice();
+        $price = $cart->product_offprice;
         if ($q > 1) {
             $quantity = $q - 1;
             $cart->update([
                 "quantity" => $quantity,
                 'sum' => $quantity * $price,
             ]);
-            $order = auth()->user()->order;
-            if (empty($order)) {
-                $order = auth()->user()->order()->create([
-                    'user_id' => auth()->id(),
-                    'total_amount' => auth()->user()->total_amount_without_off(),
-                    'sum' => auth()->user()->total_sum(),
-                ]);
-            } else {
-                $order->update([
-                    'total_amount' => auth()->user()->total_amount_without_off(),
-                    'sum' => auth()->user()->total_sum(),
-                ]);
-            }
-
         } else {
             throw ValidationException::withMessages([
                 'quantity' => ['مقدار کمتر از 1 مجاز نیست.']

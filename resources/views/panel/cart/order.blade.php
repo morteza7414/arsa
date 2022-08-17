@@ -132,15 +132,15 @@
                                                                     <h3>{{$cart->product_title}}</h3>
                                                                     @if($cart->product_price == $cart->product_offprice)
                                                                         <h4>
-                                                                            {{$cart->product_price}}
+                                                                            {{number_format($cart->product_price)}}
                                                                             تومان
                                                                         </h4>
                                                                     @else
                                                                         <h4>
-                                                                            {{$cart->product_offprice}}
+                                                                            {{number_format($cart->product_offprice)}}
                                                                             تومان
                                                                             <span>
-                                                                                {{$cart->product_price}}
+                                                                                {{number_format($cart->product_price)}}
                                                                                 تومان
                                                                             </span>
                                                                         </h4>
@@ -176,23 +176,20 @@
                                             </div>
                                             <ul class="cart_total">
                                                 <li>
-                                                    جمع سبد خرید : <span>{{$order->total_amount}} تومان</span>
+                                                    جمع سبد خرید : <span>{{number_format($order->total_amount)}} تومان</span>
                                                 </li>
                                                 <li>
-                                                    تخفیف <span>{{$order->total_amount - $order->sum}} تومان</span>
+                                                    تخفیف <span>{{number_format($order->total_amount - $order->sum)}} تومان</span>
                                                 </li>
                                                 <li>
-                                                    هزینه ارسال <span>درب منزل</span>
-                                                </li>
-                                                <li>
-                                                    کد تخفیف<span>اعمال کد تخفیف</span>
+                                                    هزینه ارسال <span>زمان تحویل</span>
                                                 </li>
                                                 <li>
                                                     مالیات <span>0,000 تومان</span>
                                                 </li>
                                                 <li>
                                                     <div class="total">
-                                                        جمع کل<span>{{$order->sum}} تومان</span>
+                                                        جمع کل<span>{{number_format($order->sum)}} تومان</span>
                                                     </div>
                                                 </li>
                                                 <li class="pt-0">

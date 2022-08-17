@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-3">
-                                            <h2 class="td-color">63,000 تومان</h2>
+                                            <h2>{{number_format($cart->product_offprice)}} تومان</h2>
                                         </div>
                                         <div class="col-xs-3">
                                             <h2 class="td-color"><a href="javascript:void(0)" class="icon"><i
@@ -69,11 +69,7 @@
                                     </div>
                                 </td>
                                 <td>
-{{--                                    @if($cart->product->offprice() !== $cart->product->price)--}}
-{{--                                        <h2>{{$cart->product->offprice()}} تومان</h2>--}}
-{{--                                    @else--}}
-                                        <h2>{{$cart->product->offprice()}} تومان</h2>
-{{--                                    @endif--}}
+                                        <h2>{{number_format($cart->product_offprice)}} تومان</h2>
                                 </td>
                                 <td>
                                     <div class="qty-box">
@@ -102,7 +98,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <h2 class="td-color">{{$cart->sum}} تومان</h2>
+                                    <h2 class="td-color">{{number_format($cart->sum)}} تومان</h2>
 
                                 </td>
                             </tr>
@@ -137,7 +133,7 @@
                             <tr>
                                 <td>جمع سبد خرید :</td>
                                 <td>
-                                    <h2>{{auth()->user()->total_sum()}} تومان</h2>
+                                    <h2>{{number_format(auth()->user()->total_sum())}} تومان</h2>
                                 </td>
                             </tr>
                         </tfoot>
@@ -149,9 +145,6 @@
                     <a href="{{route('ordering')}}" class="btn btn-normal">
                         ادامه خرید
                     </a>
-{{--                    <a href="{{route('purchase')}}" class="btn btn-normal ms-3">--}}
-{{--                        پرداخت--}}
-{{--                    </a>--}}
                 </div>
             </div>
         </div>
