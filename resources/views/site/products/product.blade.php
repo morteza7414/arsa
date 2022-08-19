@@ -4,6 +4,15 @@
         - صفحه محصول
     </x-slot>
 
+    <x-slot name="link">
+        <meta name="description" content="{{$product->title}}">
+        @if($product->tags()->first())
+            <meta name="keywords" content="@foreach($product->tags() as $tag)-{{$tag->tag}}@endforeach">
+        @else
+            <meta name="keywords" content="{{$product->title}}/هوشمندسازی ساختمان">
+        @endif
+    </x-slot>
+
 
     <!-- breadcrumb start -->
     <div class="breadcrumb-main ">
@@ -85,11 +94,11 @@
                                 <ul class="pro-price">
                                     <li class="siteproductpage-price">قیمت:</li>
                                     @if($product->offprice() <> $product->price)
-                                        <li>{{$product->offprice()}} تومان</li>
-                                        <li><span>{{$product->price}} تومان</span></li>
+                                        <li>{{number_format($product->offprice())}} تومان</li>
+                                        <li><span>{{number_format($product->price)}} تومان</span></li>
                                         <li class="off-percentage">{{$percentage}}% تخفیف</li>
                                     @else
-                                        <li>{{$product->price}} تومان</li>
+                                        <li>{{number_format($product->price)}} تومان</li>
                                     @endif
                                 </ul>
                                 @if($product->inventory_display == true)
@@ -125,6 +134,16 @@
                             {{--                                </div>--}}
                             {{--                            </div>--}}
 
+
+                            <div id="selectSize"
+                                 class="pro-group addeffect-section product-description border-product mb-0">
+                                <h6 class="product-title">تگ ها</h6>
+                                <div class="product_tags col-12">
+                                    @foreach($product->tags() as $tag)
+                                        <h4 class="product_tag">#{{$tag->tag}}</h4>
+                                    @endforeach
+                                </div>
+                            </div>
 
                             <div id="selectSize"
                                  class="pro-group addeffect-section product-description border-product mb-0">
@@ -175,6 +194,7 @@
                                     </form>
                                 </div>
                             </div>
+
                             <div class="pro-group">
                                 <h6 class="product-title">ویژگی های محصول</h6>
                                 <div class="siteproductpage-options">
@@ -193,25 +213,25 @@
                                 </div>
 
                             </div>
-{{--                            <div class="pro-group pb-0">--}}
-{{--                                <h6 class="product-title">اشتراک گذاری</h6>--}}
-{{--                                <ul class="product-social">--}}
-{{--                                    <li><a target="_blank"--}}
-{{--                                           href="https://www.google.com/maps/@31.7722745,54.2227189,16.75z"><i--}}
-{{--                                                class="fa-solid fa-map-marker fa-flip"--}}
-{{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
-{{--                                    <li><a target="_blank"--}}
-{{--                                           href="https://mail.google.com/mail/u/0/?fs=1&to=info@rsaholding.com&bcc=info@rsaholding.com&tf=cm"><i--}}
-{{--                                                class="fa-solid fa-envelope fa-flip"--}}
-{{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
-{{--                                    <li><a href="javascript:void(0)"><i class="fab fa-twitter fa-flip"--}}
-{{--                                                                        style="--fa-animation-duration: 2s;"></i></a>--}}
-{{--                                    </li>--}}
-{{--                                    <li><a target="_blank" href="https://www.instagram.com/r.sa_bms/"><i--}}
-{{--                                                class="fab fa-instagram fa-flip"--}}
-{{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
+                            {{--                            <div class="pro-group pb-0">--}}
+                            {{--                                <h6 class="product-title">اشتراک گذاری</h6>--}}
+                            {{--                                <ul class="product-social">--}}
+                            {{--                                    <li><a target="_blank"--}}
+                            {{--                                           href="https://www.google.com/maps/@31.7722745,54.2227189,16.75z"><i--}}
+                            {{--                                                class="fa-solid fa-map-marker fa-flip"--}}
+                            {{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
+                            {{--                                    <li><a target="_blank"--}}
+                            {{--                                           href="https://mail.google.com/mail/u/0/?fs=1&to=info@rsaholding.com&bcc=info@rsaholding.com&tf=cm"><i--}}
+                            {{--                                                class="fa-solid fa-envelope fa-flip"--}}
+                            {{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
+                            {{--                                    <li><a href="javascript:void(0)"><i class="fab fa-twitter fa-flip"--}}
+                            {{--                                                                        style="--fa-animation-duration: 2s;"></i></a>--}}
+                            {{--                                    </li>--}}
+                            {{--                                    <li><a target="_blank" href="https://www.instagram.com/r.sa_bms/"><i--}}
+                            {{--                                                class="fab fa-instagram fa-flip"--}}
+                            {{--                                                style="--fa-animation-duration: 2s;"></i></a></li>--}}
+                            {{--                                </ul>--}}
+                            {{--                            </div>--}}
                         </div>
                     </div>
                     <div class="col-12">
@@ -518,15 +538,18 @@
                                         @if($product->images()->first())
                                             <div class="product-front">
                                                 <a href="{{route('productpage',[$product->id,$product->slut])}}">
-                                                    <img src="{{asset('images/products/gallery/'.$product->images()->first()->image)}}"
-                                                         class="img-fluid  " alt="product">
+                                                    <img
+                                                        src="{{asset('images/products/gallery/'.$product->images()->first()->image)}}"
+                                                        class="img-fluid  " alt="product">
                                                 </a>
                                             </div>
                                         @elseif(empty($product->images()->first()) and $product->videos()->first())
                                             <div class="product-front">
                                                 <a href="{{route('productpage',[$product->id,$product->slut])}}">
-                                                    <video width="320" height="240"  controls>
-                                                        <source src="{{asset('videos/products/gallery/'.$product->videos()->first()->video)}}" type="video/mp4">
+                                                    <video width="320" height="240" controls>
+                                                        <source
+                                                            src="{{asset('videos/products/gallery/'.$product->videos()->first()->video)}}"
+                                                            type="video/mp4">
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 </a>
@@ -548,7 +571,7 @@
                                     @if($product->abstract)
                                         <div class="slider-abstract">
                                             <h6>
-                                                {{$product->final_price}}
+                                                {{number_format($product->final_price)}}
                                             </h6>
                                         </div>
                                     @endif

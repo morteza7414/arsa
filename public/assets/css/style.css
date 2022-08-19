@@ -1873,6 +1873,30 @@ table.invoice-table tbody {
 .offcode-products {
     justify-content: space-between;
 }
+.tag-input {
+    border: 1px solid;
+    border-radius: 5px;
+    align-items: center;
+    padding: 1px 3px;
+}
+.tag-input input {
+    font-size: 0.9rem;
+}
+.product_tags {
+    display: block;
+}
+.product_tag {
+    background: #eee;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 2px 5px;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    margin: 2px;
+    width: fit-content;
+    display: inline-block;
+}
 
 
 
@@ -1915,6 +1939,88 @@ table.invoice-table tbody {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**************************************************************************
+**************************************************************************
+
+                *****  Responsive Codes ******
+
+**************************************************************************
+**************************************************************************/
 
 
 /** responsive codes **/

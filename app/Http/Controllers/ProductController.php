@@ -271,6 +271,15 @@ class ProductController extends Controller
                     ]);
                 }
 
+
+                    // tags import //
+                $tag = "tag".$i;
+                if ($request->$tag){
+                    if (!empty($request->$tag)){
+                        DB::insert('insert into product_tags (product_id, tag) values (?, ?)', [$product->id, $request->$tag]);
+                    }
+                }
+
             }
 
             $request->session()->flash('status', 'معرفی محصول با موفقیت انجام شد!');
@@ -423,6 +432,7 @@ class ProductController extends Controller
 
     public function StoreEdit(Request $request)
     {
+//        dd($request->all());
         $count = count($request->all());
         $product = Product::findOrFail($request->productId);
         $request->validate([
@@ -699,6 +709,8 @@ class ProductController extends Controller
                 }
             }
 
+            /** clear tags */
+            DB::table('product_tags')->where('product_id',$product->id)->delete();
 
             /** for gallery update */
             for ($i = 1; $i < $count; $i++) {
@@ -738,6 +750,15 @@ class ProductController extends Controller
                         'title' => $videoTitle,
                         'category' => $videoCategory,
                     ]);
+                }
+
+                // tags import //
+
+                $tag = "tag".$i;
+                if ($request->$tag){
+                    if (!empty($request->$tag)){
+                        DB::insert('insert into product_tags (product_id, tag) values (?, ?)', [$product->id, $request->$tag]);
+                    }
                 }
             }
 

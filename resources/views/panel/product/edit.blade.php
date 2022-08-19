@@ -81,9 +81,10 @@
                                         <br>
 
                                         <div class="col-md-12 form-group">
-                                            <label > خلاصه توضیحات</label>
+                                            <label> خلاصه توضیحات</label>
                                             <input type="text" name="abstract" class="form-control"
-                                                   placeholder="خلاصه توضیحات خود را وارد کنید" value="{{$product->abstract}}">
+                                                   placeholder="خلاصه توضیحات خود را وارد کنید"
+                                                   value="{{$product->abstract}}">
                                             @error('abstract')
                                             <p class="error_message">
                                                 {{ $message }}
@@ -94,7 +95,6 @@
 
                                         <hr>
                                         <br>
-
 
 
                                         <div id="categoryRow" class="row col-md-12 form-group">
@@ -426,6 +426,30 @@
                                         <hr>
                                         <br>
 
+                                        <div id="productTags" class="row col-md-12 form-group">
+                                            <label>تگ ها:</label>
+                                            <div hidden>{{$t =1}}</div>
+                                            @foreach($product->tags() as $tag)
+                                                <div class="tag-input col-md-4 col-xs-12 col-sm-12 inline_flex">
+                                                    <label>
+                                                        تگ {{$t}}:
+                                                    </label>
+                                                    <input type="text" name="tag{{$t}}" class="input-group-text" value="{{$tag->tag}}"/>
+                                                </div>
+                                                <div hidden>{{$t++}}</div>
+                                            @endforeach
+
+                                        </div>
+                                        <div>
+                                            <button type="button" onclick="javascript:void(0)" id="addTag">
+                                                افزودن تگ جدید
+                                            </button>
+                                        </div>
+
+
+                                        <hr>
+                                        <br>
+
 
                                         <div id="newRow" class="row col-md-12 form-group">
                                             <label>مشخصات محصول:</label>
@@ -655,6 +679,25 @@
 
                 $('#productVideo').append(html);
                 l++
+            });
+        </script>
+
+        <script>
+            var t = `{{count($product->tags())+1}}`
+            $("#addTag").click(function () {
+                var html = '';
+
+                html += '<br>'
+                html += '<div class="tag-input col-md-4 col-xs-12 col-sm-12 inline_flex">'
+                html += '<label>'
+                html += 'تگ' + t + ':'
+                html += '</label>'
+                html += ' <input type="text" name=tag' + t + ' class="input-group-text" id=tag' + t + ' placeholder="تگ مورد نظر خود را وارد نمایید" />'
+                html += '</div>'
+                html += '<br>'
+
+                $('#productTags').append(html);
+                t++
             });
         </script>
 

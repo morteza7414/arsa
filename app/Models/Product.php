@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isEmpty;
 
 class Product extends Model
@@ -192,6 +193,11 @@ class Product extends Model
         $result = curl_exec($ch);
         curl_close($ch);
 
+    }
+
+    public function tags()
+    {
+        return DB::table('product_tags')->where('product_id',$this->id)->get();
     }
 
 

@@ -13,8 +13,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="مجموعه آرسا با بهترین خدمات در راستای هوشمندسازی ساختمان های مختلف در خدمت شماست">
-    <meta name="keywords" content="هوشمندسازی ساختمان/هوشمندسازی">
+{{--    <meta name="description" content="مجموعه آرسا با بهترین خدمات در راستای هوشمندسازی ساختمان های مختلف در خدمت شماست">--}}
+{{--    <meta name="keywords" content="هوشمندسازی ساختمان/هوشمندسازی">--}}
     <meta name="author" content="Morteza Jaladat">
 
     <meta name="enamad" content="551192"/>

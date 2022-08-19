@@ -3,6 +3,7 @@
         - معرفی محصول
     </x-slot>
 
+
     <!-- breadcrumb start -->
     <div class="breadcrumb-main ">
         <div class="container">
@@ -321,6 +322,19 @@
                                         <hr>
                                         <br>
 
+                                        <div id="productTags" class="row col-md-12 form-group">
+                                            <label>تگ ها:</label>
+
+                                        </div>
+                                        <div>
+                                            <button type="button" onclick="javascript:void(0)" id="addTag">
+                                                افزودن تگ جدید
+                                            </button>
+                                        </div>
+
+                                        <hr>
+                                        <br>
+
                                         <div id="newRow" class="row col-md-12 form-group">
                                             <label>مشخصات محصول:</label>
                                         </div>
@@ -535,6 +549,25 @@
             });
         </script>
 
+        <script>
+            var t = 1;
+            $("#addTag").click(function () {
+                var html = '';
+
+                html += '<br>'
+                html += '<div class="tag-input col-md-4 col-xs-12 col-sm-12 inline_flex">'
+                html += '<label>'
+                html += 'تگ' + t + ':'
+                html += '</label>'
+                html += ' <input type="text" name=tag' + t + ' class="input-group-text" id=tag' + t + ' placeholder="تگ مورد نظر خود را وارد نمایید" />'
+                html += '</div>'
+                html += '<br>'
+
+                $('#productTags').append(html);
+                t++
+            });
+        </script>
+
         <script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
         <script>
             CKEDITOR.replace('text', {
@@ -548,22 +581,3 @@
 
 
 </x-main-layout>
-
-
-{{--<div class="col-md-3 col-xs-12 col-sm-12">--}}
-{{--    <label>انتخاب: </label>--}}
-{{--    <select id="select1" name="property1">--}}
-{{--        <option selected>انتخاب کنید</option>--}}
-{{--        @foreach($properties as $property)--}}
-{{--            <option onclick="addValue()" value="{{$property}}">--}}
-{{--                {{$property}}--}}
-{{--            </option>--}}
-{{--        @endforeach--}}
-{{--    </select>--}}
-{{--</div>--}}
-
-{{--<div class="col-md-8 col-xs-12 col-sm-12">--}}
-{{--    <label>مقدار ویژگی: </label>--}}
-
-{{--    <input name="propertyInput1" type="text" placeholder="مقدار ویژگی مدنظر خود را وارد نمایید">--}}
-{{--</div>--}}

@@ -63,7 +63,7 @@ class OffcodeController extends Controller
                 'off_reason' => $request->off_reason,
             ]);
 
-            for ($i = 1; $i < count(Product::all()); $i++) {
+            for ($i = 1; $i <= count(Product::all()); $i++) {
                 $product = "product" . "-" . $i;
                 if ($request->$product) {
                     DB::insert('insert into offcode_products (product_id, offcode_id) values (?, ?)', [$request->$product, $offcode->id]);
@@ -121,8 +121,9 @@ class OffcodeController extends Controller
             ]);
 
             DB::table('offcode_products')->where('offcode_id', $offcode->id)->delete();
-            for ($i = 1; $i < count(Product::all()); $i++) {
+            for ($i = 1; $i <= count(Product::all()); $i++) {
                 $product = "product" . "-" . $i;
+
                 if ($request->$product) {
                     DB::insert('insert into offcode_products (product_id, offcode_id) values (?, ?)', [$request->$product, $offcode->id]);
                 }
