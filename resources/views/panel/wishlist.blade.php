@@ -39,15 +39,16 @@
                             <th scope="col">عمل</th>
                         </tr>
                         </thead>
-                        @if(auth()->user()->likes->toArray())
-                            @foreach(auth()->user()->likes->toArray() as $like)
+                        @if(auth()->user()->likes)
+                            @foreach(auth()->user()->likes as $like)
                                 <tbody>
                                 <tr>
                                     <td>
+
                                         <a href="javascript:void(0)"><img
-                                                    src="{{asset('images/products/'.'/'.$like['image'])}}"
-                                                    alt="product"
-                                                    class="img-fluid  "></a>
+                                                src="{{asset('public/images/products/gallery'.'/'.$like->images()->first()->image)}}"
+                                                alt="product"
+                                                class="img-fluid  "></a>
                                     </td>
                                     <td><a href="javascript:void(0)">{{$like['title']}}</a>
                                         {{--                                        <div class="mobile-cart-content">--}}
@@ -68,9 +69,9 @@
                                     </td>
                                     <td>
                                         @if($like['offprice'])
-                                            <h2>{{$like['offprice']}} تومان</h2>
+                                            <h2>{{number_format($like['offprice'])}} تومان</h2>
                                         @else
-                                            <h2>{{$like['price']}} تومان</h2>
+                                            <h2>{{number_format($like['price'])}} تومان</h2>
                                         @endif
                                     </td>
                                     <td>
@@ -88,6 +89,10 @@
                                            onclick="like(event,{{$like['id']}})">
                                             <i class="ti-close"></i>
                                         </a>
+                                        <form action="{{ route('like', $like->id) }}" method="post"
+                                              id="addLike-{{$like->id}}">
+                                            @csrf
+                                        </form>
                                         <a href="javascript:void(0)" class="cart tooltip-top"
                                            data-tippy-content="افزودن به سبد خرید">
                                             <i class="ti-shopping-cart"></i>

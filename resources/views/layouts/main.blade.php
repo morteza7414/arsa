@@ -158,14 +158,14 @@
                                         </li>
                                         <!--HOME-END-->
 
-                                        <!--product-meu start-->
+                                        <!--product-menu start-->
                                         <li>
                                             <a class="dark-menu-item" href="{{route('allProducts')}}">محصولات</a>
                                             <ul>
-                                                @foreach(\App\Models\Product::all() as $product)
+                                                @foreach(\App\Models\Category::all() as $category)
                                                     <li>
-                                                        <a href="{{route('productpage',[$product->id,$product->slut])}}">
-                                                            {{$product->title}}
+                                                        <a href="{{route('category',[$category->child])}}">
+                                                            {{$category->child}}
                                                         </a>
                                                     </li>
                                                 @endforeach
@@ -414,6 +414,23 @@
             </div>
         </div>
     </div>
+
+    <div class="support-whatsapp">
+        <div class="support-whatsapp-icon">
+            <a target="_blank" href="https://wa.me/+989330892905">
+                <i class="fab fa-whatsapp fa-beat" class="whatsappIcon"></i>
+            </a>
+        </div>
+        <div class="support-whatsapp-text">
+             <span>
+                 کمک نیاز دارید؟
+             <br/>
+             <strong>چت از طریق واتساپ</strong>
+             </span>
+        </div>
+    </div>
+
+    
     <div class="subfooter dark-footer ">
         <div class="container">
             <div class="row">

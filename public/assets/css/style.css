@@ -1175,11 +1175,7 @@ h7 {
     width: 100% !important;
     height:100% !important;
 }
-.loader-wrapper {
-    /*animation:ring 4s 0.01s ease-in-out infinite ;*/
-    width: 100% !important;
-    height:100% !important;
-}
+
 
 
 .brand-name {
@@ -1758,7 +1754,7 @@ table.invoice-table tbody {
 .tab-product ol li {
     display: list-item;
 }
-
+/******* whatsapp support style **********/
 .support-whatsapp {
     position: fixed;
     left: 1rem;

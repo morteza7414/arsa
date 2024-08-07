@@ -4,6 +4,12 @@
         - رویداد
     </x-slot>
 
+    <x-slot name="link">
+        <meta name="description" content="{{$news->title}}">
+        <meta name="keywords" content="{{$news->title}}/هوشمندسازی ساختمان">
+    </x-slot>
+
+
 
     <!-- section start -->
     <section class="section_news section-big-pt-space ratio_asos b-g-light">
@@ -15,14 +21,22 @@
                             <div class="row">
                                 <div class="col-sm-12 p-0">
                                     <div class="single-page top-banner-wrapper">
+                                        <h1 hidden>{{$news->title}}</h1>
                                         <a href="javascript:void(0)">
                                             <div class="top-image col-8">
-                                                @if(empty($images->first()))
+                                                @if(empty($images->first()) and empty($videos->first()))
                                                     <img src="{{asset('images/site/news3.jpg')}}"
-                                                         class="img-fluid  w-100" alt="">
+                                                         class="img-fluid  w-100" alt="رویدادهای هوشمندسازی ساختمان">
+                                                @elseif(empty($images->first()) and !empty($videos->first()))
+                                                <!--<video width="320" height="240"  controls>-->
+                                                <!--    <source src="{{asset('videos/news/'.$videos->first()->video)}}" type="video/mp4">-->
+                                                    <!--    Your browser does not support the video tag.-->
+                                                    <!--</video>-->
+                                                    <img src="{{asset('images/site/film.jpg')}}"
+                                                         class="img-fluid  w-100" alt="رویدادهای هوشمندسازی ساختمان">
                                                 @else
                                                     <img src="{{asset('images/news'.'/'.$images->first()->image)}}"
-                                                         class="img-fluid  w-100" alt="">
+                                                         class="img-fluid  w-100" alt="ویدادهای هوشمندسازی ساختمان">
                                                 @endif
                                             </div>
                                         </a>
@@ -40,7 +54,7 @@
                                                 <div class="description-div col-12">
                                                     <h5>
                                                         <span>
-                                                        {{$news->description}}
+                                                        {!! $news->description !!}
                                                         </span>
                                                     </h5>
                                                 </div>
@@ -71,7 +85,7 @@
                                                                                                 <img
                                                                                                     src="{{asset('images/news/'.$image->image)}}"
                                                                                                     class="img-fluid  "
-                                                                                                    alt="image">
+                                                                                                    alt="{{$news->title}}">
                                                                                             </a>
                                                                                         </div>
                                                                                     </div>
@@ -101,10 +115,12 @@
                                                                                     <div class="product-imgbox">
                                                                                         <div class="product-front">
                                                                                             <a href="{{route('video.single',['code'=>2,'video'=>$video->video])}}">
-                                                                                                <video width="320" height="240"  controls>
-                                                                                                    <source src="{{asset('videos/news/'.$video->video)}}" type="video/mp4">
-                                                                                                    Your browser does not support the video tag.
-                                                                                                </video>
+                                                                                                <!--<video width="320" height="240"  controls>-->
+                                                                                            <!--    <source src="{{asset('videos/news/'.$video->video)}}" type="video/mp4">-->
+                                                                                                <!--    Your browser does not support the video tag.-->
+                                                                                                <!--</video>-->
+                                                                                                <img src="{{asset('images/site/film.jpg')}}"
+                                                                                                     class="img-fluid  w-100" alt="رویدادهای هوشمندسازی ساختمان">
                                                                                             </a>
                                                                                         </div>
                                                                                     </div>

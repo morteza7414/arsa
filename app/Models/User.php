@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
+use Mockery\Exception;
 use Psy\Util\Str;
 
 class User extends Authenticatable
@@ -101,23 +103,28 @@ class User extends Authenticatable
 
     public function send_sms_code($mobile)
     {
-        $otp = rand('1111', '99999');
-        $stringOtp = (string)$otp;
-        $url = 'https://console.melipayamak.com/api/send/shared/e33447ed51e04b5eaafb42632511d492';
-        $data = array('bodyId' => 81926, 'to' => $mobile, 'args' => [$stringOtp]);
-        $data_string = json_encode($data);
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,
-            array('Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
-        );
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $otp;
+        try {
+            $otp = rand('1111', '99999');
+            $stringOtp = (string)$otp;
+            $url = 'https://console.melipayamak.com/api/send/shared/e33447ed51e04b5eaafb42632511d492';
+            $data = array('bodyId' => 81926, 'to' => $mobile, 'args' => [$stringOtp]);
+            $data_string = json_encode($data);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER,
+                array('Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
+            );
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return $otp;
+        }
+        catch(Exception $e){
+            Log::error($e);
+        }
     }
 
     public function getRoleInFarsi()

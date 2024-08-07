@@ -25,10 +25,11 @@
                                                          class="img-fluid  w-100" alt="">
                                                 @else
                                                     <a class="single_topVideo_a" href="{{route('video.single',['code'=>3,'video'=>$videos->first()->video])}}">
-                                                        <video width="320" height="240"  controls>
-                                                            <source src="{{asset('videos/learns/'.$videos->first()->video)}}" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                        </video>
+{{--                                                        <video width="320" height="240"  controls>--}}
+{{--                                                            <source src="{{asset('videos/learns/'.$videos->first()->video)}}" type="video/mp4">--}}
+{{--                                                            Your browser does not support the video tag.--}}
+{{--                                                        </video>--}}
+                                                        <style>.h_iframe-aparat_embed_frame{position:relative;}.h_iframe-aparat_embed_frame .ratio{display:block;width:100%;height:auto;}.h_iframe-aparat_embed_frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;}</style><div class="h_iframe-aparat_embed_frame"><span style="display: block;padding-top: 57%"></span><iframe src="https://www.aparat.com/video/video/embed/videohash/7qlOu/vt/frame"  allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe></div>
                                                     </a>
                                                 @endif
                                             </div>

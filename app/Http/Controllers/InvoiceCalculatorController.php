@@ -40,12 +40,17 @@ class InvoiceCalculatorController extends Controller
 
         $invoiceUser = InvoiceCalculatorUser::where('mobile', $request->mobile)->first();
 
-//        if (empty($invoiceUser)){
-//            InvoiceCalculatorUser::create([
-//                'name' => $request->name,
-//                'mobile' => $request->mobile,
-//            ]);
-//        }
+        if (empty($invoiceUser)){
+            InvoiceCalculatorUser::create([
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+            ]);
+        }else{
+            $invoiceUser->update([
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+            ]);
+        }
         /** set master board number */
         if ($request->controlWithPhone) {
             $master += (int)(floor($request->area / 200) + 1);
@@ -190,6 +195,20 @@ class InvoiceCalculatorController extends Controller
             'smartKey' => ['number'=>$smartKey,'price'=>$smartKeyPrice,'title'=>'کلید لمسی هوشمند'],
             'remoteKey' => ['number'=>$remoteKey,'price'=>$remoteKeyPrice,'title'=>'کلید ریموت دار'],
         ];
+
+        //create or update user invoice //
+        $invoiceUser = InvoiceCalculatorUser::where('mobile', $request->mobile)->first();
+        if (empty($invoiceUser)){
+            InvoiceCalculatorUser::create([
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+                'data' => [$data]
+            ]);
+        }else{
+            $invoiceUser->update([
+                'data' => [$data],
+            ]);
+        }
 
         return view('site.invoiceCalculator.invoice', compact('info','data'));
 
